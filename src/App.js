@@ -24,7 +24,7 @@ function App() {
 
   const fetchBooks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/books');
+      const response = await axios.get('https://lumina-library-ecas.onrender.com/api/books');
       setBooks(response.data);
     } catch (error) {
       console.error("Error reading book list:", error);
@@ -97,7 +97,7 @@ function App() {
   const handleBorrow = async (bookId) => {
     const selectedBook = books.find(b => b.id === bookId);
     try {
-      const response = await axios.post('http://localhost:5000/api/borrow', { bookId, username: currentUser });
+      const response = await axios.post('https://lumina-library-ecas.onrender.com/api/borrow', { bookId, username: currentUser });
       alert(response.data.message);
       if (response.data.status === "SUCCESS") {
         setActiveLoans([...activeLoans, { bookId, timeLeft: 3600 }]);
@@ -112,7 +112,7 @@ function App() {
   const handleReturn = async (bookId, isAutoExpired = false) => {
     const selectedBook = books.find(b => b.id === bookId);
     try {
-      await axios.post('http://localhost:5000/api/return', { bookId });
+      await axios.post('https://lumina-library-ecas.onrender.com/api/return', { bookId });
       setActiveLoans(prev => prev.filter(l => l.bookId !== bookId));
       logActivity(isAutoExpired ? `⏰ Timer timeout automatic drop: "${selectedBook?.title}"` : `Returned copy item: "${selectedBook?.title}"`);
       fetchBooks();
